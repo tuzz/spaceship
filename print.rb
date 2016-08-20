@@ -24,6 +24,12 @@ end
 
 ARGF.each_line do |line|
   result = JSON.parse(line)
+
+  if result.empty?
+    puts "Fully exhausted the search space."
+    exit(0)
+  end
+
   gen_0 = result.fetch("gen0")
   gen_n = result.fetch("genN")
   print_gens(gen_0, gen_n)
