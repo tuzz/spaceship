@@ -1,0 +1,58 @@
+function main () {
+  array7<array7<bool>> gen0;
+
+  genN = gen0;
+  4.times(function^ (i) {
+    edgeClear!(genN);
+    genN = nextGeneration(genN);
+  });
+
+  invariant gen0.translate == genN;
+
+  expose gen0, genN;
+};
+
+function nextGeneration (gen) {
+  return gen.map(function^ (row, y) {
+    return row.map(function^ (cell, x) {
+      neighbours = gen.liveNeighbours(x, y);
+      return neighbours == 3 || (cell && neighbours == 2);
+    });
+  });
+};
+
+function translate (gen) {
+  return gen.map(function^ (row, y) {
+    return row.map(function^ (cell, x) {
+      return live?(gen, x + 1, y + 1);
+    });
+  });
+};
+
+function liveNeighbours (gen, x, y) {
+  count = 0;
+
+  count += gen.live?(x - 1, y - 1) ? 1 : 0;
+  count += gen.live?(x, y - 1)     ? 1 : 0;
+  count += gen.live?(x + 1, y - 1) ? 1 : 0;
+  count += gen.live?(x - 1, y)     ? 1 : 0;
+  count += gen.live?(x + 1, y)     ? 1 : 0;
+  count += gen.live?(x - 1, y + 1) ? 1 : 0;
+  count += gen.live?(x, y + 1)     ? 1 : 0;
+  count += gen.live?(x + 1, y + 1) ? 1 : 0;
+
+  return count;
+};
+
+function live? (gen, x, y) {
+  return gen.get(y).get(x);
+};
+
+function edgeClear! (gen) {
+  7.times(function^ (i) {
+    invariant !gen.first[i];
+    invariant !gen[i].first;
+  });
+};
+
+main();
