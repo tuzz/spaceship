@@ -1,5 +1,6 @@
 function main () {
   array7<array7<bool>> gen0;
+  bool orthogonal;
 
   genN = gen0;
   4.times(function^ (i) {
@@ -7,9 +8,9 @@ function main () {
     genN = nextGeneration(genN);
   });
 
-  invariant gen0.translate == genN;
+  invariant gen0.translate(orthogonal) == genN;
 
-  expose gen0, genN;
+  expose gen0, genN, orthogonal;
 };
 
 function nextGeneration (gen) {
@@ -21,10 +22,13 @@ function nextGeneration (gen) {
   });
 };
 
-function translate (gen) {
+function translate (gen, orthogonal) {
   return gen.map(function^ (row, y) {
     return row.map(function^ (cell, x) {
-      return live?(gen, x + 1, y + 1);
+      deltaX = orthogonal ? 0 : 1;
+      deltaY = 1;
+
+      return live?(gen, x + deltaX, y + deltaY);
     });
   });
 };

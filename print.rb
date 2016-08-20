@@ -1,6 +1,6 @@
 require "json"
 
-def print_gens(gen_0, gen_n)
+def print_gens(gen_0, gen_n, orthogonal)
   gen_0.each.with_index do |row_0, y|
     row_n = gen_n[y]
 
@@ -8,10 +8,14 @@ def print_gens(gen_0, gen_n)
       print cell ? "X" : "."
     end
 
-    if y == 3
-      print "  -->  "
+    if y == 2 && orthogonal
+      print "  Orthogonal  "
+    elsif y == 2
+      print "   Diagonal   "
+    elsif y == 3
+      print "  --------->  "
     else
-      print "       "
+      print "              "
     end
 
     row_n.each do |cell|
@@ -32,7 +36,9 @@ ARGF.each_line do |line|
 
   gen_0 = result.fetch("gen0")
   gen_n = result.fetch("genN")
-  print_gens(gen_0, gen_n)
+  orthogonal = result.fetch("orthogonal")
+
+  print_gens(gen_0, gen_n, orthogonal)
   puts "\n\n"
 end
 
